@@ -1,10 +1,25 @@
+"use client"
+
 import MaxWidthWrapper from "./MaxWidthWrapper";
+import { useEffect, useState } from "react"
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 const Navbard = () => {
-  const user = undefined;
-  const isAdmin = false;
+  const [user, setUser] = useState<any>(null) // Usuario
+  const [isAdmin, setIsAdmin] = useState<boolean>(false) // Rol admin
+
+  
+  useEffect(() => {
+    const userData = localStorage.getItem("user")
+    if (userData) {
+      const parsedUser = JSON.parse(userData)
+      setUser(parsedUser)
+      setIsAdmin(parsedUser?.role === "admin")
+    }
+  }, [])
+
+
   return (
     <nav
       className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b 
@@ -20,6 +35,7 @@ const Navbard = () => {
           </Link>
           <div className="h-full flex items-center space-x-4">
             {user ? (
+  
               <>
                 <Link
                   href="/api/auth/logout"
@@ -33,7 +49,7 @@ const Navbard = () => {
                 {isAdmin ? (
                   <>
                     <Link
-                      href="/api/auth/logout"
+                      href="/Dashboard"
                       className={buttonVariants({
                         size: "sm",
                         variant: "ghost",
@@ -57,7 +73,7 @@ const Navbard = () => {
             ) : (
               <>
                 <Link
-                  href="/api/auth/register"
+                  href=""
                   className={buttonVariants({
                     size: "sm",
                     variant: "ghost",
